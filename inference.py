@@ -6,7 +6,7 @@ if use_flash_attention:
 
 import torch
 from peft import AutoPeftModelForCausalLM
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from transformers import TrainingArguments
 
 args = TrainingArguments(
@@ -27,15 +27,33 @@ args = TrainingArguments(
     disable_tqdm=True # disable tqdm since with packing values are in correct
 )
 
-args.output_dir = "NousResearch/Llama-2-7b-chat-hf"
+# args.output_dir = "NousResearch/Llama-2-7b-chat-hf"
+#
+# # load base LLM model and tokenizer
+# model = AutoPeftModelForCausalLM.from_pretrained(
+#     args.output_dir,
+#     low_cpu_mem_usage=True,
+#     torch_dtype=torch.float16,
+#     load_in_4bit=True,
+# )
 
-# load base LLM model and tokenizer
-model = AutoPeftModelForCausalLM.from_pretrained(
-    args.output_dir,
-    low_cpu_mem_usage=True,
-    torch_dtype=torch.float16,
-    load_in_4bit=True,
+model_id = "NousResearch/Llama-2-7b-chat-hf" # non gated with RLHF version
+
+# BitsAndBytesConfig int-4 config
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True, bnb_4bit_use_double_quant=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16
 )
+
+# Load model and tokenizer
+model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    quantization_config=bnb_config,
+    use_cache=False,
+    use_flash_attention_2=use_flash_attention,
+    device_map="auto",
+)
+model.config.pretraining_tp = 1
+
 tokenizer = AutoTokenizer.from_pretrained(args.output_dir)
 
 from datasets import load_dataset
