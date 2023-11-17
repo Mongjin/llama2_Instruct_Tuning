@@ -46,7 +46,7 @@ from random import randrange
 # dataset = load_dataset("databricks/databricks-dolly-15k", split="train")
 # sample = dataset[randrange(len(dataset))]
 
-print(sample)
+# print(sample)
 
 prompt = f"""### Instruction:
 너는 dialogue state를 고려하면서 사용자의 추천 요청 질의에 응답하는 챗봇이야. dialogue state는 주어진 대화를 기반으로 알맞게 생성해줘. 내가 전체 대화를 주면 마지막 turn까지 진행된 dialogue state를 key-value 형태로 [Output State] 뒤에 생성해줘, 그리고 더 적합한 추천을 하기 위해서 필요한 정보를 추가적으로 채워야하는 (Required Additional State) dialogue state도 key-value 형식으로 [Output State] 뒤에 생성해줘. 마지막으로 [Output Response] 뒤에 마지막 user 발화에 알맞은 답변도 생성해줘.
