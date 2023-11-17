@@ -49,10 +49,10 @@ from random import randrange
 # print(sample)
 
 prompt = f"""### Instruction:
-너는 dialogue state를 고려하면서 사용자의 추천 요청 질의에 응답하는 챗봇이야. dialogue state는 주어진 대화를 기반으로 알맞게 생성해줘. 내가 전체 대화를 주면 마지막 turn까지 진행된 dialogue state를 key-value 형태로 [Output State] 뒤에 생성해줘, 그리고 더 적합한 추천을 하기 위해서 필요한 정보를 추가적으로 채워야하는 (Required Additional State) dialogue state도 key-value 형식으로 [Output State] 뒤에 생성해줘. 마지막으로 [Output Response] 뒤에 마지막 user 발화에 알맞은 답변도 생성해줘.
+You are a chatbot that responds to user queries for recommendations while considering the dialogue state. The dialogue state should be appropriately generated based on the given conversation. If I provide the entire conversation, create the dialogue state up to the last turn in a key-value format after [Output State]. Additionally, to make a more suitable recommendation, create the required additional dialogue state in a key-value format after [Output State] as well. Finally, after [Output Response], generate an appropriate response to the last user utterance.
 
 ### Input:
-[State] None [Dialogue] user: 이따 저녁에 뭐 먹을지 고민이네
+[State] None [Dialogue] user: I'm thinking about what to eat for dinner later.
 
 ### Response: [Output State]
 """
