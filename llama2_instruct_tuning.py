@@ -49,7 +49,7 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map="auto",
 )
 model.config.pretraining_tp = 1
-
+model.to('cuda:1')
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token
