@@ -1,3 +1,4 @@
+use_flash_attention = False
 if use_flash_attention:
     # unpatch flash attention
     from utils.llama_patch import unplace_flash_attn_with_attn
