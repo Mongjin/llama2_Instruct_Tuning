@@ -7,6 +7,25 @@ if use_flash_attention:
 import torch
 from peft import AutoPeftModelForCausalLM
 from transformers import AutoTokenizer
+from transformers import TrainingArguments
+
+args = TrainingArguments(
+    output_dir="llama-7-int4-dolly",
+    num_train_epochs=3,
+    per_device_train_batch_size=6 if use_flash_attention else 4,
+    gradient_accumulation_steps=2,
+    gradient_checkpointing=True,
+    optim="paged_adamw_32bit",
+    logging_steps=10,
+    save_strategy="epoch",
+    learning_rate=2e-4,
+    bf16=True,
+    tf32=True,
+    max_grad_norm=0.3,
+    warmup_ratio=0.03,
+    lr_scheduler_type="constant",
+    disable_tqdm=True # disable tqdm since with packing values are in correct
+)
 
 args.output_dir = "llama-7-int4-dolly"
 
