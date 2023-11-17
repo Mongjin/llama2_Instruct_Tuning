@@ -27,7 +27,7 @@ args = TrainingArguments(
     disable_tqdm=True # disable tqdm since with packing values are in correct
 )
 
-args.output_dir = "llama-7-int4-dolly"
+args.output_dir = "NousResearch/Llama-2-7b-chat-hf"
 
 # load base LLM model and tokenizer
 model = AutoPeftModelForCausalLM.from_pretrained(
