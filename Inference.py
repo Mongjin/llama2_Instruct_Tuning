@@ -43,24 +43,24 @@ from random import randrange
 
 
 # Load dataset from the hub and get a sample
-dataset = load_dataset("databricks/databricks-dolly-15k", split="train")
-sample = dataset[randrange(len(dataset))]
+# dataset = load_dataset("databricks/databricks-dolly-15k", split="train")
+# sample = dataset[randrange(len(dataset))]
 
 print(sample)
 
 prompt = f"""### Instruction:
-Use the Input below to create an instruction, which could have been used to generate the input using an LLM.
+너는 dialogue state를 고려하면서 사용자의 추천 요청 질의에 응답하는 챗봇이야. dialogue state는 주어진 대화를 기반으로 알맞게 생성해줘. 내가 전체 대화를 주면 마지막 turn까지 진행된 dialogue state를 key-value 형태로 [Output State] 뒤에 생성해줘, 그리고 더 적합한 추천을 하기 위해서 필요한 정보를 추가적으로 채워야하는 (Required Additional State) dialogue state도 key-value 형식으로 [Output State] 뒤에 생성해줘. 마지막으로 [Output Response] 뒤에 마지막 user 발화에 알맞은 답변도 생성해줘.
 
 ### Input:
-{sample['response']}
+[State] None [Dialogue] user: 이따 저녁에 뭐 먹을지 고민이네
 
-### Response:
+### Response: [Output State]
 """
 
 input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
 # with torch.inference_mode():
 outputs = model.generate(input_ids=input_ids, max_new_tokens=100, do_sample=True, top_p=0.9,temperature=0.9)
 
-print(f"Prompt:\n{sample['response']}\n")
+# print(f"Prompt:\n{sample['response']}\n")
 print(f"Generated instruction:\n{tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]}")
-print(f"Ground truth:\n{sample['instruction']}")
+# print(f"Ground truth:\n{sample['instruction']}")
