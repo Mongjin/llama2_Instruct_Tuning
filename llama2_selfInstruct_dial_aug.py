@@ -45,8 +45,6 @@ for i in range(0, 15):
 
     prompt = f"""### Instruction: Please generate new dialogue that 'user' is asking recommendation food or travel for 'bot'. 'bot' should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You should follow the structure of given samples; Always start with user's utterance and finish wih "bot: ". \n ### Input: [Sample 1] {datas[random_indies[0]]['dialogue']} \n [Sample 2] {datas[random_indies[1]]['dialogue']} \n [Sample 3] {datas[random_indies[2]]['dialogue']} \n [Sample 4] {datas[random_indies[3]]['dialogue']} \n [Sample 5] {datas[random_indies[4]]['dialogue']} \n [Sample 6] {datas[random_indies[5]]['dialogue']} \n ### Output: [Sample 7] """
 
-    print(prompt)
-
     input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
     # with torch.inference_mode():
     outputs = model.generate(input_ids=input_ids, max_new_tokens=256, do_sample=True, top_p=0.9, temperature=0.9)
