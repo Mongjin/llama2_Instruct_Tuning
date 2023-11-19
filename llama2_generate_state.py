@@ -61,5 +61,5 @@ for i in range(0, 30):
         f"Generated {(i+1)}-th instruction:\n{output}")
     # print(f"Ground truth:\n{sample['instruction']}")
 
-with open('./Dialogue_augment.json', 'w', encoding='utf-8') as fw:
+with open('./states_augment.json', 'w', encoding='utf-8') as fw:
     json.dump(augmented_states, fw, indent="\t", ensure_ascii=False)
