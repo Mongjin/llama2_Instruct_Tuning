@@ -30,7 +30,7 @@ model.config.pretraining_tp = 1
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 
 datas = []
-with open('samples_translation.json', 'r', encoding='r') as fr:
+with open('samples_translation.json', 'r', encoding='utf-8') as fr:
     for line in fr.readlines():
         datas.append(json.loads(line))
 
