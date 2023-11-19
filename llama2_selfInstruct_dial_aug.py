@@ -51,6 +51,8 @@ for i in range(0, 15):
     ### Output:
     """
 
+    print(prompt)
+
     input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
     # with torch.inference_mode():
     outputs = model.generate(input_ids=input_ids, max_new_tokens=256, do_sample=True, top_p=0.9, temperature=0.9)
