@@ -37,7 +37,7 @@ with open('samples_translation.json', 'r', encoding='utf-8') as fr:
 
 random_indies = []
 while len(random_indies) < 6:
-    index = random.randn(0, 60)
+    index = random.randint(0, 60)
     if index not in random_indies:
         random_indies.append(index)
 
