@@ -49,7 +49,7 @@ for i in range(0, 30):
         if index not in random_indies:
             random_indies.append(index)
 
-    prompt = f"""### Instruction: Generate dialogue state given dialogues that 'user' is asking 'bot' for recommendation food or travel. I will give you some samples. The 'prev_state' (i.e., previous state) is the dialogue state that determined before the user's last utterance. The 'cur_state' (i.e., current state) is the dialogue state that determined after the user's last utterance. You should generate 'prev_state' and 'cur_state', following the structure of given samples. \n ### Input: [Dialogue 1] {datas[random_indies[0]]['dialogue']} 'prev_state': {datas[random_indies[0]]['prev_state']} 'cur_state': {datas[random_indies[0]]['cur_state']} \n [Dialogue 2] {datas[random_indies[1]]['dialogue']} 'prev_state': {datas[random_indies[1]]['prev_state']} 'cur_state': {datas[random_indies[1]]['cur_state']} \n [Dialogue 3] {datas[random_indies[2]]['dialogue']} 'prev_state': {datas[random_indies[2]]['prev_state']} 'cur_state': {datas[random_indies[2]]['cur_state']} \n ### Output: [Dialogue 4] {augmented_dials[i]} """
+    prompt = f"""### Instruction: Generate dialogue state given dialogues that 'user' is asking 'bot' for recommendation food or travel. I will give you some samples. The 'prev_state' (i.e., previous state) is the dialogue state that determined before the user's last utterance. The 'cur_state' (i.e., current state) is the dialogue state that determined after the user's last utterance. You should generate both 'prev_state' and 'cur_state', following the structure of given samples. \n ### Input: [Dialogue 1] {datas[random_indies[0]]['dialogue']} 'prev_state': {datas[random_indies[0]]['prev_state']} 'cur_state': {datas[random_indies[0]]['cur_state']} \n [Dialogue 2] {datas[random_indies[1]]['dialogue']} 'prev_state': {datas[random_indies[1]]['prev_state']} 'cur_state': {datas[random_indies[1]]['cur_state']} \n [Dialogue 3] {datas[random_indies[2]]['dialogue']} 'prev_state': {datas[random_indies[2]]['prev_state']} 'cur_state': {datas[random_indies[2]]['cur_state']} \n ### Output: [Dialogue 4] {augmented_dials[i]} """
 
     input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
     # with torch.inference_mode():
@@ -58,7 +58,7 @@ for i in range(0, 30):
     output = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
     augmented_states[i] = output
     print(
-        f"Generated {(i+1)}-th instruction:\n{output}")
+        f"Generated {(i+1)}-th output:\n{output}")
     # print(f"Ground truth:\n{sample['instruction']}")
 
 with open('./states_augment.json', 'w', encoding='utf-8') as fw:
