@@ -35,7 +35,7 @@ with open('samples_translation.json', 'r', encoding='utf-8') as fr:
     for line in fr.readlines():
         datas.append(json.loads(line))
 
-outputs = {}
+augmented_dialogues = {}
 for i in range(0, 15):
     random_indies = []
     while len(random_indies) < 6:
@@ -56,10 +56,10 @@ for i in range(0, 15):
     outputs = model.generate(input_ids=input_ids, max_new_tokens=512, do_sample=True, top_p=0.9, temperature=0.9)
     # print(f"Prompt:\n{sample['response']}\n")
     output = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
-    outputs[i] = output
+    augmented_dialogues[i] = output
     print(
         f"Generated {i}-th instruction:\n{output}")
     # print(f"Ground truth:\n{sample['instruction']}")
 
 with open('./Dialogue_augment.json', 'w', encoding='utf-8') as fw:
-    json.dump(fw, outputs, indent="\t", ensure_ascii=False)
+    json.dump(fw, augmented_dialogues, indent="\t", ensure_ascii=False)
