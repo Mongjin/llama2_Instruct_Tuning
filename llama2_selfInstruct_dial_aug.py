@@ -35,25 +35,31 @@ with open('samples_translation.json', 'r', encoding='utf-8') as fr:
     for line in fr.readlines():
         datas.append(json.loads(line))
 
-random_indies = []
-while len(random_indies) < 6:
-    index = random.randint(0, 60)
-    if index not in random_indies:
-        random_indies.append(index)
+outputs = {}
+for i in range(0, 15):
+    random_indies = []
+    while len(random_indies) < 6:
+        index = random.randint(0, 60)
+        if index not in random_indies:
+            random_indies.append(index)
 
+    prompt = f"""### Instruction:
+    Please generate one dialogue that 'user' is asking about recommendation food or travel 'bot'. For 'bot', it should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You can reference given samples. You should follow the structure of given samples and always finish with user's utterance.
 
+    ### Input: [Sample 1] {datas[random_indies[0]]['dialogue']} [Sample 2] {datas[random_indies[1]]['dialogue']} [Sample 3] {datas[random_indies[2]]['dialogue']} [Sample 4] {datas[random_indies[3]]['dialogue']} [Sample 5] {datas[random_indies[4]]['dialogue']} [Sample 6] {datas[random_indies[5]]['dialogue']} 
 
-prompt = f"""### Instruction:
-Please generate new dialogue that 'user' is asking about recommendation food or travel 'bot'. For 'bot', it should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You can reference given samples. You should follow the structure of given samples and always finish with 'bot: '.
+    ### Output:
+    """
 
-### Input: [Sample 1] {datas[random_indies[0]]['dialogue']} [Sample 2] {datas[random_indies[1]]['dialogue']} [Sample 3] {datas[random_indies[2]]['dialogue']} [Sample 4] {datas[random_indies[3]]['dialogue']} [Sample 5] {datas[random_indies[4]]['dialogue']} [Sample 6] {datas[random_indies[5]]['dialogue']} 
+    input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
+    # with torch.inference_mode():
+    outputs = model.generate(input_ids=input_ids, max_new_tokens=512, do_sample=True, top_p=0.9, temperature=0.9)
+    # print(f"Prompt:\n{sample['response']}\n")
+    output = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
+    outputs[i] = output
+    print(
+        f"Generated {i}-th instruction:\n{output}")
+    # print(f"Ground truth:\n{sample['instruction']}")
 
-### Output:
-"""
-
-input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
-# with torch.inference_mode():
-outputs = model.generate(input_ids=input_ids, max_new_tokens=100, do_sample=True, top_p=0.9,temperature=0.9)
-# print(f"Prompt:\n{sample['response']}\n")
-print(f"Generated instruction:\n{tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]}")
-# print(f"Ground truth:\n{sample['instruction']}")
+with open('./Dialogue_augment.json', 'w', encoding='utf-8') as fw:
+    json.dump(fw, outputs, indent="\t", ensure_ascii=False)
