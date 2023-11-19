@@ -63,4 +63,4 @@ for i in range(0, 15):
     # print(f"Ground truth:\n{sample['instruction']}")
 
 with open('./Dialogue_augment.json', 'w', encoding='utf-8') as fw:
-    json.dump(fw, augmented_dialogues, indent="\t", ensure_ascii=False)
+    json.dump(augmented_dialogues, fw, indent="\t", ensure_ascii=False)
