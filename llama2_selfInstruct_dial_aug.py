@@ -44,7 +44,7 @@ for i in range(0, 15):
             random_indies.append(index)
 
     prompt = f"""### Instruction:
-    Please generate one dialogue that 'user' is asking about recommendation food or travel 'bot'. For 'bot', it should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You can reference given samples. You should follow the structure of given samples; Always strat and finish with user's utterance.
+    Please generate new dialogue that 'user' is asking about recommendation food or travel 'bot'. In context of 'bot', it should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You should follow the structure of given samples; Always strat and finish with user's utterance.
 
     ### Input: [Sample 1] {datas[random_indies[0]]['dialogue']} \n [Sample 2] {datas[random_indies[1]]['dialogue']} \n [Sample 3] {datas[random_indies[2]]['dialogue']} \n [Sample 4] {datas[random_indies[3]]['dialogue']} \n [Sample 5] {datas[random_indies[4]]['dialogue']} \n [Sample 6] {datas[random_indies[5]]['dialogue']} \n 
     [Sample 7] 
@@ -59,7 +59,7 @@ for i in range(0, 15):
     output = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
     augmented_dialogues[i] = output
     print(
-        f"Generated {i}-th instruction:\n{output}")
+        f"Generated {(i+1)}-th instruction:\n{output}")
     # print(f"Ground truth:\n{sample['instruction']}")
 
 with open('./Dialogue_augment.json', 'w', encoding='utf-8') as fw:
