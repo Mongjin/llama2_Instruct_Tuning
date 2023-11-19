@@ -44,7 +44,7 @@ for i in range(0, 15):
             random_indies.append(index)
 
     prompt = f"""### Instruction:
-    Please generate one dialogue that 'user' is asking about recommendation food or travel 'bot'. For 'bot', it should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You can reference given samples. You should follow the structure of given samples and always finish with user's utterance.
+    Please generate one dialogue that 'user' is asking about recommendation food or travel 'bot'. For 'bot', it should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You can reference given samples. You should follow the structure of given samples; Always strat and finish with user's utterance.
 
     ### Input: [Sample 1] {datas[random_indies[0]]['dialogue']} [Sample 2] {datas[random_indies[1]]['dialogue']} [Sample 3] {datas[random_indies[2]]['dialogue']} [Sample 4] {datas[random_indies[3]]['dialogue']} [Sample 5] {datas[random_indies[4]]['dialogue']} [Sample 6] {datas[random_indies[5]]['dialogue']} 
 
