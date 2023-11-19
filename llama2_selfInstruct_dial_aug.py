@@ -11,7 +11,7 @@ from transformers import TrainingArguments
 import json
 import random
 
-model_id = "NousResearch/Llama-2-7b-chat-hf" # non gated with RLHF version
+model_id = "NousResearch/Llama-2-13b-chat-hf" # non gated with RLHF version
 
 # BitsAndBytesConfig int-4 config
 bnb_config = BitsAndBytesConfig(
@@ -39,7 +39,7 @@ augmented_dialogues = {}
 for i in range(0, 15):
     random_indies = []
     while len(random_indies) < 6:
-        index = random.randint(0, 60)
+        index = random.randint(0, 59)
         if index not in random_indies:
             random_indies.append(index)
 
@@ -53,7 +53,7 @@ for i in range(0, 15):
 
     input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
     # with torch.inference_mode():
-    outputs = model.generate(input_ids=input_ids, max_new_tokens=512, do_sample=True, top_p=0.9, temperature=0.9)
+    outputs = model.generate(input_ids=input_ids, max_new_tokens=256, do_sample=True, top_p=0.9, temperature=0.9)
     # print(f"Prompt:\n{sample['response']}\n")
     output = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
     augmented_dialogues[i] = output
