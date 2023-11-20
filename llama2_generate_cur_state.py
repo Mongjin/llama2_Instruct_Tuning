@@ -42,6 +42,10 @@ with open('dialogue_augment.txt', 'r', encoding='utf-8') as fr:
     for line in fr.readlines():
         augmented_dials.append(line.strip())
 
+prev_states = {}
+with open('prev_states_augment.json', 'r', encoding='utf-8') as fw:
+    prev_states = json.load(fw)
+
 augmented_states = {}
 for i in range(0, 30):
     random_indies = []
@@ -49,8 +53,13 @@ for i in range(0, 30):
         index = random.randint(0, 59)
         if index not in random_indies:
             random_indies.append(index)
+    target_dialogue = augmented_dials[i]
+    user_utt_index = target_dialogue.rindex('user:')
+    if user_utt_index != 0:
+        target_dialogue = target_dialogue[:user_utt_index]
 
-    prompt = f"""### Instruction: Generate dialogue state given dialogues that 'user' is asking 'bot' for recommendation food or travel. I will give you some samples. The 'prev_state' (i.e., previous state) is the dialogue state that determined before the user's last utterance. The 'cur_state' (i.e., current state) is the dialogue state that determined after the user's last utterance. You should generate accurately both 'prev_state' and 'cur_state', following the structure of given samples. \n ### Input: [Dialogue 1] {datas[random_indies[0]]['dialogue']} 'prev_state': {datas[random_indies[0]]['prev_state']} 'cur_state': {datas[random_indies[0]]['cur_state']} \n [Dialogue 2] {datas[random_indies[1]]['dialogue']} 'prev_state': {datas[random_indies[1]]['prev_state']} 'cur_state': {datas[random_indies[1]]['cur_state']} \n [Dialogue 3] {datas[random_indies[2]]['dialogue']} 'prev_state': {datas[random_indies[2]]['prev_state']} 'cur_state': {datas[random_indies[2]]['cur_state']} \n ### Output: [Dialogue 4] {augmented_dials[i]} """
+    print(target_dialogue)
+    prompt = f"""### Instruction: Generate dialogue current dialogue state given previous state and [dialogue 4] that 'user' is asking 'bot' for recommendation food or travel. Assume you are a dialogue state tracker for better recommendation. I will show you three dialogues and corresponding 'prev_state' and 'cur_state' for samples. Given 'prev_state' and [Dialogue 4], you should generate 'cur_state'; Do not generate additional comment following states. \n ### Input: [Dialogue 1] {datas[random_indies[0]]['dialogue']} 'prev_state': {datas[random_indies[0]]['prev_state']} 'cur_state': {datas[random_indies[0]]['cur_state']} \n [Dialogue 2] {datas[random_indies[1]]['dialogue']} 'prev_state': {datas[random_indies[1]]['prev_state']} 'cur_state': {datas[random_indies[1]]['cur_state']} \n [Dialogue 3] {datas[random_indies[2]]['dialogue']} 'prev_state': {datas[random_indies[2]]['prev_state']} 'cur_state': {datas[random_indies[2]]['cur_state']} \n [Dialogue 4] {datas[random_indies[3]]['dialogue']} 'prev_state': {datas[random_indies[3]]['prev_state']} 'cur_state': {datas[random_indies[3]]['cur_state']} \n ### Output: [Dialogue 4] {target_dialogue} 'prev_state': {prev_states[i].strip()} """
 
     input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
     # with torch.inference_mode():
