@@ -49,7 +49,7 @@ with open('prev_states_augment.json', 'r', encoding='utf-8') as fw:
 augmented_states = {}
 for i in range(0, 30):
     random_indies = []
-    while len(random_indies) < 3:
+    while len(random_indies) < 4:
         index = random.randint(0, 59)
         if index not in random_indies:
             random_indies.append(index)
