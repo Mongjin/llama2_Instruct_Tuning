@@ -49,8 +49,11 @@ for i in range(0, 30):
         index = random.randint(0, 59)
         if index not in random_indies:
             random_indies.append(index)
-
-    prompt = f"""### Instruction: Generate dialogue state given [dialogue 4] that 'user' is asking 'bot' for recommendation food or travel. Assume you are a dialogue strate tracker to generate dialogue state for better recommendation. I will show you three dialogues and corresponding 'prev_state' for samples. The 'prev_state' (i.e., previous state) is the dialogue state that determined before the user's last utterance. \n ### Input: [Dialogue 1] {datas[random_indies[0]]['dialogue']} 'prev_state': {datas[random_indies[0]]['prev_state']} \n [Dialogue 2] {datas[random_indies[1]]['dialogue']} 'prev_state': {datas[random_indies[1]]['prev_state']} \n [Dialogue 3] {datas[random_indies[2]]['dialogue']} 'prev_state': {datas[random_indies[2]]['prev_state']} \n [Dialogue 4] {datas[random_indies[3]]['dialogue']} 'prev_state': {datas[random_indies[3]]['prev_state']} \n ### Output: [Dialogue 4] {augmented_dials[i]} """
+    target_dialogue = augmented_dials[i]
+    user_utt_index = target_dialogue.rindex('user:')
+    if user_utt_index != 0:
+        target_dialogue = target_dialogue[:user_utt_index]
+    prompt = f"""### Instruction: Generate dialogue state given [dialogue 4] that 'user' is asking 'bot' for recommendation food or travel. Assume you are a dialogue state tracker for better recommendation. I will show you three dialogues and corresponding 'prev_state' for samples. You should generate 'prev_state'. \n ### Input: [Dialogue 1] {datas[random_indies[0]]['dialogue']} 'prev_state': {datas[random_indies[0]]['prev_state']} \n [Dialogue 2] {datas[random_indies[1]]['dialogue']} 'prev_state': {datas[random_indies[1]]['prev_state']} \n [Dialogue 3] {datas[random_indies[2]]['dialogue']} 'prev_state': {datas[random_indies[2]]['prev_state']} \n [Dialogue 4] {datas[random_indies[3]]['dialogue']} 'prev_state': {datas[random_indies[3]]['prev_state']} \n ### Output: [Dialogue 4] {target_dialogue} """
 
     input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
     # with torch.inference_mode():
