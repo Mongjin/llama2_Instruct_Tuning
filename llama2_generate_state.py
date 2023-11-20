@@ -25,6 +25,7 @@ model = AutoModelForCausalLM.from_pretrained(
     use_cache=False,
     use_flash_attention_2=use_flash_attention,
     device_map="auto",
+    use_safetensors=True
 )
 model.config.pretraining_tp = 1
 model.eval()
