@@ -12,7 +12,7 @@ from transformers import TrainingArguments
 import json
 import random
 
-model_id = "/home/konkuk/Llama/Llama-2-13b-chat-hf.safetensors" # non gated with RLHF version
+model_id = "/home/konkuk/Llama/Llama-2-13b-chat" # non gated with RLHF version
 
 # BitsAndBytesConfig int-4 config
 bnb_config = BitsAndBytesConfig(
