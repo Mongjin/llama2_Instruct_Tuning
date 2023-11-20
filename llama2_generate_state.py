@@ -25,8 +25,7 @@ model = LlamaForCausalLM.from_pretrained(
     quantization_config=bnb_config,
     use_cache=False,
     use_flash_attention_2=use_flash_attention,
-    device_map="auto",
-    use_safetensors=True
+    device_map="auto"
 )
 model.config.pretraining_tp = 1
 model.eval()
