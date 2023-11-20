@@ -7,6 +7,7 @@ if use_flash_attention:
 import torch
 from peft import AutoPeftModelForCausalLM
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import LlamaForCausalLM, LlamaTokenizer
 from transformers import TrainingArguments
 import json
 import random
@@ -19,7 +20,7 @@ bnb_config = BitsAndBytesConfig(
 )
 
 # Load model and tokenizer
-model = AutoModelForCausalLM.from_pretrained(
+model = LlamaForCausalLM.from_pretrained(
     model_id,
     quantization_config=bnb_config,
     use_cache=False,
@@ -30,7 +31,7 @@ model = AutoModelForCausalLM.from_pretrained(
 model.config.pretraining_tp = 1
 model.eval()
 
-tokenizer = AutoTokenizer.from_pretrained(model_id)
+tokenizer = LlamaTokenizer.from_pretrained(model_id)
 
 datas = []
 with open('samples_translation.json', 'r', encoding='utf-8') as fr:
