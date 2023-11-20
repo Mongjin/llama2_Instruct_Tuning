@@ -59,7 +59,7 @@ for i in range(0, 30):
 
     input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
     # with torch.inference_mode():
-    outputs = model.generate(input_ids=input_ids, max_new_tokens=256, do_sample=True, top_p=0.9, temperature=0.9)
+    outputs = model.generate(input_ids=input_ids, max_new_tokens=64, do_sample=True, top_p=0.9, temperature=0.9)
     # print(f"Prompt:\n{sample['response']}\n")
     output = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
     augmented_states[i] = output
