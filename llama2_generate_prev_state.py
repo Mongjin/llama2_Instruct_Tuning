@@ -12,8 +12,8 @@ from transformers import TrainingArguments
 import json
 import random
 
-model_id = "NousResearch/Llama-2-13b-chat-hf" # non gated with RLHF version
-
+# model_id = "NousResearch/Llama-2-13b-chat-hf" # non gated with RLHF version
+model_id = "/workspace/Llama-2-13b-chat-hf" # non gated with RLHF version
 # BitsAndBytesConfig int-4 config
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True, bnb_4bit_use_double_quant=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16
@@ -55,7 +55,7 @@ for i in range(0, 30):
         target_dialogue = target_dialogue[:user_utt_index]
 
     print(target_dialogue)
-    prompt = f"""### Instruction: Create dialogue states based on [Dialogue 5]. [Dialogue 1] ~ [Dialogue 4] and corresponding dialogue states will be given as examples and when given [Dialogue 5], create dialogue states. Following these rules: First, as shown in the examples, create dialogue states for better recommendation. Second, do not generate additional utterances or explain. Please create 'prev_state' of [Dialogue 5] while considering these factors. \n ### Input: [Dialogue 1] {datas[random_indies[0]]['dialogue']} [Previous state 1] 'prev_state': {datas[random_indies[0]]['prev_state']} \n [Dialogue 2] {datas[random_indies[1]]['dialogue']} [Previous state 2] 'prev_state': {datas[random_indies[1]]['prev_state']} \n [Dialogue 3] {datas[random_indies[2]]['dialogue']} [Previous state 3] 'prev_state': {datas[random_indies[2]]['prev_state']} \n [Dialogue 4] {datas[random_indies[3]]['dialogue']} [Previous state 4] 'prev_state': {datas[random_indies[3]]['prev_state']} \n ### Output: [Dialogue 5] {target_dialogue} [Previous State 5] """
+    prompt = f"""### Instruction: Create dialogue states based on [Dialogue 5]. [Dialogue 1] ~ [Dialogue 4] and corresponding dialogue states will be given as examples and when given [Dialogue 5], create dialogue states. Following these rules: First, as shown in the examples, create dialogue states of [Dialogue 5] for better recommendation. Second, create dialogue states of [Dialogue 5] while keeping the structure of examples. Third, do not generate additional utterances or explain. Please create 'prev_state' of [Dialogue 5] while considering these factors. \n ### Input: [Dialogue 1] {datas[random_indies[0]]['dialogue']} [Previous state 1] 'prev_state': {datas[random_indies[0]]['prev_state']} \n [Dialogue 2] {datas[random_indies[1]]['dialogue']} [Previous state 2] 'prev_state': {datas[random_indies[1]]['prev_state']} \n [Dialogue 3] {datas[random_indies[2]]['dialogue']} [Previous state 3] 'prev_state': {datas[random_indies[2]]['prev_state']} \n [Dialogue 4] {datas[random_indies[3]]['dialogue']} [Previous state 4] 'prev_state': {datas[random_indies[3]]['prev_state']} \n ### Output: [Dialogue 5] {target_dialogue} [Previous State 5] """
 
     input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
     # with torch.inference_mode():
@@ -63,8 +63,7 @@ for i in range(0, 30):
     # print(f"Prompt:\n{sample['response']}\n")
     output = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
     augmented_states[i] = output
-    print(
-        f"Generated {(i+1)}-th output:\n{output}")
+    print(f"Generated {(i+1)}-th output:\n{output}")
     # print(f"Ground truth:\n{sample['instruction']}")
 
 with open('./prev_states_augment.json', 'w', encoding='utf-8') as fw:
