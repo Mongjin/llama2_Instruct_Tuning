@@ -65,8 +65,7 @@ for i in range(0, 30):
     # print(f"Prompt:\n{sample['response']}\n")
     output = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
     augmented_states[i] = output
-    print(
-        f"Generated {(i+1)}-th output:\n{output}")
+    print(f"Generated {(i+1)}-th output:\n{output}")
     # print(f"Ground truth:\n{sample['instruction']}")
 
 with open('./cur_states_augment.json', 'w', encoding='utf-8') as fw:
