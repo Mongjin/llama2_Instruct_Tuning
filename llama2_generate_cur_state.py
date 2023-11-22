@@ -12,7 +12,8 @@ from transformers import TrainingArguments
 import json
 import random
 
-model_id = "NousResearch/Llama-2-13b-chat-hf" # non gated with RLHF version
+# model_id = "NousResearch/Llama-2-13b-chat-hf" # non gated with RLHF version
+model_id = "/workspace/Llama-2-13b-chat-hf"
 
 # BitsAndBytesConfig int-4 config
 bnb_config = BitsAndBytesConfig(

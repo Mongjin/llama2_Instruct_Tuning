@@ -32,9 +32,9 @@ use_flash_attention = False
 # model_id = "NousResearch/Llama-2-7b-hf"  # non-gated
 # model_id = "meta-llama/Llama-2-7b-hf" # gated
 # model_id = "meta-llama/Llama-2-7b-chat-hf" # gated
-model_id = "NousResearch/Llama-2-7b-chat-hf" # non gated with RLHF version
+# model_id = "NousResearch/Llama-2-7b-chat-hf" # non gated with RLHF version
 # model_id = "/home/konkuk/Llama/Llama-2-13b-chat-hf" # non gated with RLHF version
-
+model_id = "/workspace/Llama-2-13b-chat-hf"
 
 # BitsAndBytesConfig int-4 config
 bnb_config = BitsAndBytesConfig(
