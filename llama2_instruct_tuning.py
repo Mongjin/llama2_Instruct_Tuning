@@ -94,7 +94,7 @@ args = TrainingArguments(
 )
 
 datas = get_dst_instruction_data('./samples_translation.json')
-print(datas)
+print(type(datas[0]), datas[0])
 dataset = []
 for i in range(len(datas)):
     dataset.append(format_instruction(datas[i]))
