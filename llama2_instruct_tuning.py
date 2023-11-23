@@ -24,6 +24,7 @@ def format_instruction(datas):
 from random import randrange
 
 datas = get_dst_instruction_data('./samples_translation.json')
+print(datas)
 dataset = []
 for i in range(len(datas)):
     dataset.append(format_instruction(datas[i]))
