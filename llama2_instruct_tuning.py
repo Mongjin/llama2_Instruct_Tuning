@@ -1,23 +1,25 @@
 from datasets import load_dataset
 from random import randrange
+import json
 
 # Load dataset from the hub
-dataset = load_dataset("databricks/databricks-dolly-15k", split="train")
+# dataset = load_dataset("databricks/databricks-dolly-15k", split="train")
 
-print(f"dataset size: {len(dataset)}")
-print(dataset[randrange(len(dataset))])
+# print(f"dataset size: {len(dataset)}")
+# print(dataset[randrange(len(dataset))])
 # dataset size: 15011
 
-def format_instruction(sample):
-	return f"""### Instruction:
-Use the Input below to create an instruction, which could have been used to generate the input using an LLM.
 
-### Input:
-{sample['response']}
+def get_dst_instruction_data(file_path):
+    datas = []
+    with open(file_path, 'r', encoding='utf-8') as fr:
+        for line in fr.readlines():
+            datas.append(json.loads(line))
+    return datas
 
-### Response:
-{sample['instruction']}
-"""
+
+def format_instruction(datas, index):
+	return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {datas[index]['prev_state']} [Dialogue] {datas[index]['dialogue']} \n ### Output: [Current state]"""
 
 from random import randrange
 
@@ -74,7 +76,7 @@ model = get_peft_model(model, peft_config)
 from transformers import TrainingArguments
 
 args = TrainingArguments(
-    output_dir="llama-7-int4-dolly",
+    output_dir="Llama-2-13b-DST-seed-only",
     num_train_epochs=3,
     per_device_train_batch_size=6 if use_flash_attention else 4,
     gradient_accumulation_steps=2,
@@ -90,6 +92,8 @@ args = TrainingArguments(
     lr_scheduler_type="constant",
     disable_tqdm=True # disable tqdm since with packing values are in correct
 )
+
+datas = get_dst_instruction_data('./samples_translation.json')
 
 from trl import SFTTrainer
 
