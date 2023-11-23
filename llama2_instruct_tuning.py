@@ -93,7 +93,7 @@ args = TrainingArguments(
     disable_tqdm=True # disable tqdm since with packing values are in correct
 )
 
-datas = get_dst_instruction_data('./samples_translation.json')
+dataset = get_dst_instruction_data('./samples_translation.json')
 
 from trl import SFTTrainer
 
