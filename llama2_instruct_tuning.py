@@ -79,7 +79,7 @@ from peft import LoraConfig, prepare_model_for_kbit_training, get_peft_model
 peft_config = LoraConfig(
         lora_alpha=16,
         lora_dropout=0.1,
-        r=64,
+        r=128,
         bias="none",
         task_type="CAUSAL_LM",
 )
@@ -100,11 +100,11 @@ args = TrainingArguments(
     optim="paged_adamw_32bit",
     logging_steps=10,
     save_strategy="epoch",
-    learning_rate=2e-2,
+    learning_rate=2e-4,
     bf16=True,
     tf32=True,
     max_grad_norm=0.3,
-    warmup_ratio=0.3,
+    warmup_ratio=0.03,
     lr_scheduler_type="constant",
     disable_tqdm=True # disable tqdm since with packing values are in correct
 )
