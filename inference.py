@@ -70,7 +70,7 @@ prompt = f"""### Instruction:
 Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors.
 
 ### Input:
-[Previous state] 'prev_state': None [Dialogue] user: I'm thinking about what to eat for dinner later\nbot: 
+[Previous state] 'prev_state': Time: Dinner\nCurrent craving: None\nPreferred meal: Prefers a warm meal due to the chilly weather\nDesired cuisine for dinner: None [Dialogue] user: Lately, I get hungry every day around 5 pm! I'm always wondering what to have for dinner! What should I eat today?...\nbot: Yeah, it can be tough to choose a menu every day. Do you have any dishes you've been craving lately?\nuser: Um... not really! But with the weather getting chilly, I think something warm would be nice!\nbot: Oh, definitely! Warm food is the best for cold days! How about some hot soup with bread? It's said to be really delicious. What do you think?\nuser: Oh... soup sounds great... But I had Western food for lunch today, so I feel like having Korean food for dinner.
 
 ### Output: [Current state] 'current_state':
 """
