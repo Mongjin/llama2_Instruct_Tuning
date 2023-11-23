@@ -19,7 +19,13 @@ def get_dst_instruction_data(file_path):
 
 
 def format_instruction(sample):
-    return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {sample['prev_state']} [Dialogue] {sample['dialogue']} \n ### Output: [Current state] 'current_state': {sample['cur_state']} """
+    dialogue = sample['dialogue']
+    if "bot: " in dialogue:
+        bot_index = dialogue.rindex("bot: ")
+        # len("abot: ") = 6, "abot: ".rindex("bot: ") = 1
+        if bot_index == len(dialogue) - 5:
+            dialogue = dialogue[:bot_index]
+    return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {sample['prev_state']} [Dialogue] {dialogue} \n ### Output: [Current state] 'current_state': {sample['cur_state']} """
     # return f"""### Instruction:
     # Use the Input below to create an instruction, which could have been used to generate the input using an LLM.
     #
