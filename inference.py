@@ -77,7 +77,7 @@ Instruction: Update 'cur_state' (i.e., current state) based on last user's utter
 
 input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
 # with torch.inference_mode():
-outputs = model.generate(input_ids=input_ids, max_new_tokens=100, do_sample=True, top_p=0.9,temperature=0)
+outputs = model.generate(input_ids=input_ids, max_new_tokens=100, do_sample=True, top_p=0.9,temperature=0.1)
 
 # print(f"Prompt:\n{sample['response']}\n")
 print(f"Generated instruction:\n{tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]}")
