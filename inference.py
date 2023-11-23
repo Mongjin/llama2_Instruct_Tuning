@@ -10,7 +10,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from transformers import TrainingArguments
 
 args = TrainingArguments(
-    output_dir="llama-7-int4-dolly",
+    output_dir="Llama-2-13b-DST-seed-only",
     num_train_epochs=3,
     per_device_train_batch_size=6 if use_flash_attention else 4,
     gradient_accumulation_steps=2,
@@ -37,7 +37,7 @@ args = TrainingArguments(
 #     load_in_4bit=True,
 # )
 
-model_id = "NousResearch/Llama-2-7b-chat-hf" # non gated with RLHF version
+model_id = "Llama-2-13b-DST-seed-only" # non gated with RLHF version
 
 # BitsAndBytesConfig int-4 config
 bnb_config = BitsAndBytesConfig(
