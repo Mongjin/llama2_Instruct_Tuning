@@ -100,11 +100,11 @@ args = TrainingArguments(
     optim="paged_adamw_32bit",
     logging_steps=10,
     save_strategy="epoch",
-    learning_rate=2e-4,
+    learning_rate=2e-2,
     bf16=True,
     tf32=True,
     max_grad_norm=0.3,
-    warmup_ratio=0.03,
+    warmup_ratio=0.3,
     lr_scheduler_type="constant",
     disable_tqdm=True # disable tqdm since with packing values are in correct
 )
