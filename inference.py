@@ -88,6 +88,7 @@ results = []
 
 for i, data in enumerate(dataset):
     prompt = format_instruction(data)
+    print(f"""prompt: \n {prompt}""")
     input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
     # with torch.inference_mode():
     outputs = model.generate(input_ids=input_ids, max_new_tokens=100, do_sample=True, top_p=0.9, temperature=0.1)
@@ -102,4 +103,4 @@ for i, data in enumerate(dataset):
 
 with open('inference_results.jsonl', 'w', encoding='utf-8') as fw:
     for result in results:
-        json.dumps(result, fw, ensual_ascii=False, indent="\t")
+        fw.write(json.dumps(result) + "\n")
