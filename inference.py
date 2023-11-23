@@ -4,6 +4,7 @@ import torch
 from peft import AutoPeftModelForCausalLM
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from transformers import TrainingArguments
+import json
 
 use_flash_attention = False
 if use_flash_attention:
