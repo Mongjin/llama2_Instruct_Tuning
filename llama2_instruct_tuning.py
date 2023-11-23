@@ -14,8 +14,14 @@ def get_dst_instruction_data(file_path):
     datas = []
     with open(file_path, 'r', encoding='utf-8') as fr:
         for line in fr.readlines():
-            datas.append(json.loads(line))
+            data = json.loads(line)
+            datas.append({'instruction': """Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors.""",
+                          'context': f"""[Previous state] 'prev_state': {data['prev_state']} [Dialogue] {data['dialogue']}""",
+                          'response': f"""[Current state] 'current_state': {data['cur_state']}"""})
     return datas
+
+
+
 
 
 def format_instruction(sample):
