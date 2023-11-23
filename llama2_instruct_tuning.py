@@ -28,9 +28,8 @@ from random import randrange
 datas = get_dst_instruction_data('./samples_translation.json')
 print(len(datas))
 dataset = []
-format_instruction(datas[0])
-# for i in range(len(datas)):
-#     dataset.append(format_instruction(datas[i]))
+for i in range(len(datas)):
+    dataset.append(format_instruction(datas[i]))
 
 # print(format_instruction(dataset[randrange(len(dataset))]))
 
