@@ -23,7 +23,7 @@ def format_instruction(datas):
 
 from random import randrange
 
-print(format_instruction(dataset[randrange(len(dataset))]))
+# print(format_instruction(dataset[randrange(len(dataset))]))
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
