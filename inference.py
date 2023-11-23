@@ -1,13 +1,15 @@
+from datasets import load_dataset
+from random import randrange
+import torch
+from peft import AutoPeftModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import TrainingArguments
+
 use_flash_attention = False
 if use_flash_attention:
     # unpatch flash attention
     from utils.llama_patch import unplace_flash_attn_with_attn
     unplace_flash_attn_with_attn()
-
-import torch
-from peft import AutoPeftModelForCausalLM
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-from transformers import TrainingArguments
 
 # args = TrainingArguments(
 #     output_dir="Llama-2-13b-DST-seed-only",
@@ -37,6 +39,24 @@ from transformers import TrainingArguments
 #     load_in_4bit=True,
 # )
 
+def get_dst_instruction_data(file_path):
+    datas = []
+    with open(file_path, 'r', encoding='utf-8') as fr:
+        for line in fr.readlines():
+            datas.append(json.loads(line))
+    return datas
+
+
+def format_instruction(sample):
+    dialogue = sample['dialogue']
+    if "bot: " in dialogue:
+        bot_index = dialogue.rindex("bot: ")
+        # len("abot: ") = 6, "abot: ".rindex("bot: ") = 1
+        if bot_index == len(dialogue) - 5:
+            dialogue = dialogue[:bot_index]
+    return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {sample['prev_state']} [Dialogue] {dialogue} \n ### Output: [Current state] 'current_state': {sample['cur_state']} """
+
+dataset = get_dst_instruction_data('./samples_translation.json')
 model_id = "Llama-2-13b-DST-seed-only" # non gated with RLHF version
 
 # BitsAndBytesConfig int-4 config
@@ -56,9 +76,6 @@ model.config.pretraining_tp = 1
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 
-from datasets import load_dataset
-from random import randrange
-
 
 # Load dataset from the hub and get a sample
 # dataset = load_dataset("databricks/databricks-dolly-15k", split="train")
@@ -66,19 +83,22 @@ from random import randrange
 
 # print(sample)
 
-prompt = f"""### Instruction:
-Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors.
+results = []
 
-### Input:
-[Previous state] 'prev_state': Time: Dinner\nCurrent craving: None\nPreferred meal: Prefers a warm meal due to the chilly weather\nDesired cuisine for dinner: None [Dialogue] user: Lately, I get hungry every day around 5 pm! I'm always wondering what to have for dinner! What should I eat today?...\nbot: Yeah, it can be tough to choose a menu every day. Do you have any dishes you've been craving lately?\nuser: Um... not really! But with the weather getting chilly, I think something warm would be nice!\nbot: Oh, definitely! Warm food is the best for cold days! How about some hot soup with bread? It's said to be really delicious. What do you think?\nuser: Oh... soup sounds great... But I had Western food for lunch today, so I feel like having Korean food for dinner.
+for i, data in enumerate(dataset):
+    prompt = format_instruction(data)
+    input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
+    # with torch.inference_mode():
+    outputs = model.generate(input_ids=input_ids, max_new_tokens=100, do_sample=True, top_p=0.9, temperature=0.1)
 
-### Output: [Current state] 'current_state':
-"""
+    # print(f"Prompt:\n{sample['response']}\n")
+    result = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
+    print(
+        f"Generated instruction:\n{result}")
+    # print(f"Ground truth:\n{sample['instruction']}")
+    data['generated_state'] = result
+    results.append(data)
 
-input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
-# with torch.inference_mode():
-outputs = model.generate(input_ids=input_ids, max_new_tokens=100, do_sample=True, top_p=0.9,temperature=0.1)
-
-# print(f"Prompt:\n{sample['response']}\n")
-print(f"Generated instruction:\n{tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]}")
-# print(f"Ground truth:\n{sample['instruction']}")
+with open('inference_results.jsonl', 'w', encoding='utf-8') as fw:
+    for result in results:
+        json.dumps(result, fw, ensual_ascii=False, indent="\t")
