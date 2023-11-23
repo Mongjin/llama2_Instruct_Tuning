@@ -19,6 +19,7 @@ def get_dst_instruction_data(file_path):
 
 
 def format_instruction(datas):
+    print(type(datas), datas)
 	return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {datas['prev_state']} [Dialogue] {datas['dialogue']} \n ### Output: [Current state] 'current_state' {datas['cur_state']} """
 
 from random import randrange
@@ -94,7 +95,6 @@ args = TrainingArguments(
 )
 
 datas = get_dst_instruction_data('./samples_translation.json')
-print(type(datas[0]), datas[0])
 dataset = []
 for i in range(len(datas)):
     dataset.append(format_instruction(datas[i]))
