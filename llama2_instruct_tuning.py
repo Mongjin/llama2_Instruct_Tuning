@@ -18,8 +18,8 @@ def get_dst_instruction_data(file_path):
     return datas
 
 
-def format_instruction(datas, index):
-	return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {datas[index]['prev_state']} [Dialogue] {datas[index]['dialogue']} \n ### Output: [Current state]"""
+def format_instruction(datas):
+	return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {datas['prev_state']} [Dialogue] {datas['dialogue']} \n ### Output: [Current state] 'current_state' {data['cur_state']} """
 
 from random import randrange
 
@@ -93,7 +93,10 @@ args = TrainingArguments(
     disable_tqdm=True # disable tqdm since with packing values are in correct
 )
 
-dataset = get_dst_instruction_data('./samples_translation.json')
+datas = get_dst_instruction_data('./samples_translation.json')
+dataset = []
+for i in range(len(datas)):
+    dataset.append(format_instruction(datas[i]))
 
 from trl import SFTTrainer
 
