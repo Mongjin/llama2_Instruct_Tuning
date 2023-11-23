@@ -54,7 +54,7 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 model.config.pretraining_tp = 1
 
-tokenizer = AutoTokenizer.from_pretrained(args.output_dir)
+tokenizer = AutoTokenizer.from_pretrained(model_id)
 
 from datasets import load_dataset
 from random import randrange
