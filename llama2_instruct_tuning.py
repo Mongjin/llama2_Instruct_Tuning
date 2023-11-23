@@ -17,7 +17,8 @@ def get_dst_instruction_data(file_path):
             data = json.loads(line)
             datas.append({'instruction': """Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors.""",
                           'context': f"""[Previous state] 'prev_state': {data['prev_state']} [Dialogue] {data['dialogue']}""",
-                          'response': f"""[Current state] 'current_state': {data['cur_state']}"""})
+                          'response': f"""[Current state] 'current_state': {data['cur_state']}""",
+                          'category': 'DST'})
     return datas
 
 
@@ -44,8 +45,8 @@ dataset = get_dst_instruction_data('./samples_translation.json')
 #     dataset.append(format_instruction(datas[i]))
 #
 # print(dataset[0])
-
-print(format_instruction(dataset[randrange(len(dataset))]))
+print(dataset[randrange(len(dataset))])
+# print(format_instruction(dataset[randrange(len(dataset))]))
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
