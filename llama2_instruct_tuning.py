@@ -40,7 +40,6 @@ dataset = get_dst_instruction_data('./samples_translation.json')
 # print(dataset[0])
 
 print(format_instruction(dataset[randrange(len(dataset))]))
-exit(1)
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
