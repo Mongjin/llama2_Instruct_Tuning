@@ -9,23 +9,23 @@ from peft import AutoPeftModelForCausalLM
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from transformers import TrainingArguments
 
-args = TrainingArguments(
-    output_dir="Llama-2-13b-DST-seed-only",
-    num_train_epochs=3,
-    per_device_train_batch_size=6 if use_flash_attention else 4,
-    gradient_accumulation_steps=2,
-    gradient_checkpointing=True,
-    optim="paged_adamw_32bit",
-    logging_steps=10,
-    save_strategy="epoch",
-    learning_rate=2e-4,
-    bf16=True,
-    tf32=True,
-    max_grad_norm=0.3,
-    warmup_ratio=0.03,
-    lr_scheduler_type="constant",
-    disable_tqdm=True # disable tqdm since with packing values are in correct
-)
+# args = TrainingArguments(
+#     output_dir="Llama-2-13b-DST-seed-only",
+#     num_train_epochs=3,
+#     per_device_train_batch_size=6 if use_flash_attention else 4,
+#     gradient_accumulation_steps=2,
+#     gradient_checkpointing=True,
+#     optim="paged_adamw_32bit",
+#     logging_steps=10,
+#     save_strategy="epoch",
+#     learning_rate=2e-4,
+#     bf16=True,
+#     tf32=True,
+#     max_grad_norm=0.3,
+#     warmup_ratio=0.03,
+#     lr_scheduler_type="constant",
+#     disable_tqdm=True # disable tqdm since with packing values are in correct
+# )
 
 # args.output_dir = "NousResearch/Llama-2-7b-chat-hf"
 #
