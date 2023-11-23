@@ -67,12 +67,12 @@ from random import randrange
 # print(sample)
 
 prompt = f"""### Instruction:
-You are a chatbot that responds to user queries for recommendations while considering the dialogue state. The dialogue state should be appropriately generated based on the given conversation. If I provide the entire conversation, create the dialogue state up to the last turn in a key-value format after [Output State]. Additionally, to make a more suitable recommendation, create the required additional dialogue state in a key-value format after [Output State] as well. Finally, after [Output Response], generate an appropriate response to the last user utterance.
+Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors.
 
 ### Input:
-[State] None [Dialogue] user: I'm thinking about what to eat for dinner later.
+[Previous state] 'prev_state': None [Dialogue] user: I'm thinking about what to eat for dinner later\nbot: 
 
-### Response: [Output State]
+### Output: [Current state] 'current_state':
 """
 
 input_ids = tokenizer(prompt, return_tensors="pt", truncation=True).input_ids.cuda()
