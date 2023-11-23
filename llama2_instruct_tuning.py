@@ -18,9 +18,6 @@ def get_dst_instruction_data(file_path):
     return datas
 
 
-
-
-
 def format_instruction(sample):
     return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {sample['prev_state']} [Dialogue] {sample['dialogue']} \n ### Output: [Current state] 'current_state': {sample['cur_state']} """
     # return f"""### Instruction:
@@ -96,7 +93,7 @@ from transformers import TrainingArguments
 
 args = TrainingArguments(
     output_dir="Llama-2-13b-DST-seed-only",
-    num_train_epochs=3,
+    num_train_epochs=10,
     per_device_train_batch_size=6 if use_flash_attention else 4,
     gradient_accumulation_steps=2,
     gradient_checkpointing=True,
