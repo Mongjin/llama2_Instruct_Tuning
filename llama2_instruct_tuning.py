@@ -32,8 +32,6 @@ def format_instruction(sample):
 
 from random import randrange
 
-print(format_instruction(dataset[randrange(len(dataset))]))
-
 # datas = get_dst_instruction_data('./samples_translation.json')
 # print(len(datas))
 # dataset = []
