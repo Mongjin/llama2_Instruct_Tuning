@@ -3,10 +3,10 @@ from random import randrange
 import json
 
 # Load dataset from the hub
-# dataset = load_dataset("databricks/databricks-dolly-15k", split="train")
+dataset = load_dataset("databricks/databricks-dolly-15k", split="train")
 
-# print(f"dataset size: {len(dataset)}")
-# print(dataset[randrange(len(dataset))])
+print(f"dataset size: {len(dataset)}")
+print(dataset[randrange(len(dataset))])
 # dataset size: 15011
 
 
@@ -23,15 +23,16 @@ def format_instruction(datas):
 
 from random import randrange
 
-datas = get_dst_instruction_data('./samples_translation.json')
-print(len(datas))
-dataset = []
-for i in range(len(datas)):
-    dataset.append(format_instruction(datas[i]))
+# datas = get_dst_instruction_data('./samples_translation.json')
+# print(len(datas))
+# dataset = []
+# for i in range(len(datas)):
+#     dataset.append(format_instruction(datas[i]))
+#
+# print(dataset[0])
 
-print(dataset[0])
-
-# print(format_instruction(dataset[randrange(len(dataset))]))
+print(format_instruction(dataset[randrange(len(dataset))]))
+exit(1)
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
