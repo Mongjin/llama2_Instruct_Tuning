@@ -53,7 +53,7 @@ def run_text_davinci(
         return None, None
 
 
-API_KEY = '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' ## 본인 API key 입력
+API_KEY = '' ## 본인 API key 입력
 ENGINE = 'gpt-4.0-turbo'
 
 # prompt = '''### Instruction: Please generate new dialogue that 'user' is asking recommendation food or travel for 'bot'. 'bot' should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You should follow the structure of given samples; You should always start with user's utterance and finish wih "bot: ".; Lastly, you should try to avoid similiar dialogue with samples. \n ### Input: [Sample 1] {datas[random_indies[0]]['dialogue']} \n [Sample 2] {datas[random_indies[1]]['dialogue']} \n [Sample 3] {datas[random_indies[2]]['dialogue']} \n [Sample 4] {datas[random_indies[3]]['dialogue']} \n [Sample 5] {datas[random_indies[4]]['dialogue']} \n [Sample 6] {datas[random_indies[5]]['dialogue']} \n ### Output: [Sample 7] '''
