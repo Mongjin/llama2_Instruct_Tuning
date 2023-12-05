@@ -33,6 +33,16 @@ def get_diversity(datas):
                 token_dict[token] = 1
             else:
                 token_dict[token] += 1
+    del token_dict['I']
+    del token_dict['<0x0A>']
+    del token_dict['ining']
+    del token_dict['Are']
+    del token_dict['ving']
+    del token_dict['ating']
+    del token_dict['oring']
+    del token_dict['iting']
+    del token_dict['c']
+    del token_dict['']
     token_dict = sorted(token_dict.items(), reverse=True, key=lambda item: item[1])
     return token_dict
 
@@ -40,4 +50,14 @@ def get_diversity(datas):
 if __name__ == "__main__":
     datas = get_data('./augmented_dial_gpt-4.jsonl')
     token_dict = get_diversity(datas)
-    print(token_dict[:50])
+    token_dict = token_dict[:20]
+
+    ratio = []
+    labels = []
+    explode = [0.02] * 20
+    for key in token_dict.keys():
+        labels.append(key)
+        ratio.append(token_dict[key])
+
+    plt.pie(ratio, labels=labels, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode, shadow=True)
+    plt.savefig('./verb_diversity.jpg', dpi=300)
