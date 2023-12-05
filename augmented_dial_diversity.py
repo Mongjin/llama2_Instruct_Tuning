@@ -27,7 +27,7 @@ def get_diversity(datas):
                 token = token.replace("▁", "")
             if token in stop_words:
                 continue
-            if not pos_tag.startswith("V"):
+            if not pos_tag[1].startswith("V"):
                 continue
             if token not in token_dict:
                 token_dict[token] = 1
