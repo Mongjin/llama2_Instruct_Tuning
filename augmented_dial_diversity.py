@@ -54,10 +54,10 @@ if __name__ == "__main__":
 
     ratioes = []
     labels = []
-    explode = [0.02] * 20
+    explode = [0.05] * 20
     for (word, ratio) in token_dict:
         labels.append(word)
         ratioes.append(ratio)
 
     plt.pie(ratioes, labels=labels, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode, shadow=True)
-    plt.savefig('./verb_diversity.jpg', dpi=300)
+    plt.savefig('./verb_diversity.jpg')
