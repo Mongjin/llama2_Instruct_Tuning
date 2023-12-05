@@ -59,5 +59,5 @@ if __name__ == "__main__":
         labels.append(word)
         ratioes.append(ratio)
 
-    plt.pie(ratioes, labels=labels, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode, shadow=True)
+    plt.pie(ratioes, labels=labels, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode, shadow=False)
     plt.savefig('./verb_diversity.jpg')
