@@ -43,6 +43,7 @@ def get_diversity(datas):
     del token_dict['iting']
     del token_dict['c']
     del token_dict['']
+    del token_dict['ing']
     token_dict = sorted(token_dict.items(), reverse=True, key=lambda item: item[1])
     return token_dict
 
