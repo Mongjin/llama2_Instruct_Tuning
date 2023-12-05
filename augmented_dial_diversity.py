@@ -52,12 +52,12 @@ if __name__ == "__main__":
     token_dict = get_diversity(datas)
     token_dict = token_dict[:20]
 
-    ratio = []
+    ratioes = []
     labels = []
     explode = [0.02] * 20
-    for key in token_dict.keys():
-        labels.append(key)
-        ratio.append(token_dict[key])
+    for (word, ratio) in token_dict:
+        labels.append(word)
+        ratioes.append(ratio)
 
-    plt.pie(ratio, labels=labels, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode, shadow=True)
+    plt.pie(ratioes, labels=labels, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode, shadow=True)
     plt.savefig('./verb_diversity.jpg', dpi=300)
