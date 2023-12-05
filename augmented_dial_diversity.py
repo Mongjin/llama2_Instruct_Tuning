@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     ratioes = []
     labels = []
-    explode = [0.1] * 20
+    explode = [0.1] * 15
     for (word, ratio) in token_dict:
         labels.append(word)
         ratioes.append(ratio)
