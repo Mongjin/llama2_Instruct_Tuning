@@ -50,11 +50,11 @@ def get_diversity(datas):
 if __name__ == "__main__":
     datas = get_data('./augmented_dial_gpt-4.jsonl')
     token_dict = get_diversity(datas)
-    token_dict = token_dict[:20]
+    token_dict = token_dict[:15]
 
     ratioes = []
     labels = []
-    explode = [0.05] * 20
+    explode = [0.1] * 20
     for (word, ratio) in token_dict:
         labels.append(word)
         ratioes.append(ratio)
