@@ -30,4 +30,4 @@ def get_diversity(datas):
 if __name__ == "__main__":
     datas = get_data('./augmented_dial_gpt-4.jsonl')
     token_dict = get_diversity(datas)
-    print(token_dict[:10])
+    print(token_dict[:50])
