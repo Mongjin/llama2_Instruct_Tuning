@@ -21,12 +21,12 @@ def get_diversity(datas):
     token_dict = {}
     for data in datas:
         tokens = tokenizer.tokenize(data)
-        for token in tokens:
+        pos_tags = nltk.pos_tag(tokens)
+        for token, pos_tag in zip(tokens, pos_tags):
             if "▁" in token:
                 token = token.replace("▁", "")
             if token in stop_words:
                 continue
-            pos_tag = nltk.pos_tag(token)
             if not pos_tag.startswith("V"):
                 continue
             if token not in token_dict:
