@@ -21,7 +21,7 @@ def get_diversity(datas):
     for data in datas:
         tokens = tokenizer.tokenize(data)
         for token in tokens:
-            if "_" in token:
+            if "▁" in token:
                 token = token.replace("▁", "")
             if token in stop_words:
                 continue
