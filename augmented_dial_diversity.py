@@ -3,6 +3,7 @@ from tqdm import tqdm
 from transformers import AutoTokenizer
 from matplotlib import pyplot as plt
 from nltk.corpus import stopwords
+import nltk
 model_id = "/workspace/Llama-2-13b-chat-hf"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 
@@ -24,6 +25,9 @@ def get_diversity(datas):
             if "▁" in token:
                 token = token.replace("▁", "")
             if token in stop_words:
+                continue
+            pos_tag = nltk.pos_tag(token)
+            if not pos_tag.startswith("V"):
                 continue
             if token not in token_dict:
                 token_dict[token] = 1
