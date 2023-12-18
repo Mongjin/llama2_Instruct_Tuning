@@ -19,10 +19,10 @@ def run_gpt_turbo(engine, prompt):
         model=engine,
         messages=[{"role": "user", "content": prompt}],  # 입력 prompt
         max_tokens=2048,
-        temperature=0.0,
+        temperature=0.2,
         top_p=1,
         n=1,
-        presence_penalty=0,
+        presence_penalty=0.3,
         frequency_penalty=0,
         # logit_bias=
         # stop=[],
@@ -73,26 +73,27 @@ def get_datas(file_path):
 
 
 seeds = get_datas('./seed_data_v2.jsonl')
-augmented_dials = get_datas('./augmented_dial_gpt-4.jsonl')
+# augmented_dials = get_datas('./augmented_dial_gpt-4.jsonl')
+augmented_dials = []
 
 answers = []
-for iter in tqdm(range(60), desc=f"Completing..."):
+for iter in tqdm(range(20), desc=f"Completing..."):
     rand_seeds_indies = []
     seeds_pool = []
-    while len(rand_seeds_indies) < 4:
+    while len(rand_seeds_indies) < 6:
         index = random.randint(0, len(seeds) - 1)
         if index not in rand_seeds_indies:
             rand_seeds_indies.append(index)
             seeds_pool.append(seeds[index])
     rand_augs_indies = []
     augs_pool = []
-    while len(rand_augs_indies) < 2:
-        index = random.randint(0, len(augmented_dials) - 1)
-        if index not in rand_augs_indies:
-            rand_augs_indies.append(index)
-            augs_pool.append(augmented_dials[index])
+    # while len(rand_augs_indies) < 2:
+    #     index = random.randint(0, len(augmented_dials) - 1)
+    #     if index not in rand_augs_indies:
+    #         rand_augs_indies.append(index)
+    #         augs_pool.append(augmented_dials[index])
 
-    samples_pool = seeds_pool + augs_pool
+    samples_pool = seeds_pool
     random.shuffle(samples_pool)
     # for i in range(len(seeds)):
     #     data = seeds[i]
@@ -104,13 +105,13 @@ for iter in tqdm(range(60), desc=f"Completing..."):
     #         pass
 
     # 본인 프롬프트에 맞게 수정
-    prompt = f'''### Instruction: Please generate new dialogue that 'user' is asking recommendation food or travel for 'bot'. 'bot' should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You should follow the structure of given samples; Lastly, you should avoid to generate similiar bot's response in samples, Please create diverse bot's responses which is requesting new information to user. \n ### Input: [Sample 1] {samples_pool[0]['dialogue']} \n [Sample 2] {samples_pool[1]['dialogue']} \n [Sample 3] {samples_pool[2]['dialogue']} \n [Sample 4] {samples_pool[3]['dialogue']} \n [Sample 5] {samples_pool[4]['dialogue']} \n [Sample 6] {samples_pool[5]['dialogue']} \n ### Output: [Sample 7] '''
+    prompt = f'''### Instruction: Please generate a new dialogue that 'user' is asking for recommendations 'bot'. 'bot' should respond like a dialogue agent that requests more information for a better recommendation rather than recommend directly. You should follow the structure of given samples; You should avoid creating similar bot responses in given samples, Please diversely create bot responses that request new information to users. \n ### Input: [Sample 1] {samples_pool[0]['dialogue']} \n [Sample 2] {samples_pool[1]['dialogue']} \n [Sample 3] {samples_pool[2]['dialogue']} \n [Sample 4] {samples_pool[3]['dialogue']} \n [Sample 5] {samples_pool[4]['dialogue']} \n [Sample 6] {samples_pool[5]['dialogue']} \n ### Output: [Sample 7] '''
 
     answer, usage = run_gpt_turbo(ENGINE, prompt=prompt)
     answers.append({'prev_state': "", "dialogue": answer, "cur_state": "", "response": ""})
     augmented_dials.append({'prev_state': "", "dialogue": answer, "cur_state": "", "response": ""})
 
-with open('augmented_dial_v2_6shots_gpt-4.jsonl', 'w', encoding='utf-8') as fw:
+with open('augmented_dial_v2_6shots_temp0.2_pp0.3_gpt-4.jsonl', 'w', encoding='utf-8') as fw:
     for data in answers:
         fw.write(json.dumps(data, ensure_ascii=False))
         fw.write("\n")
