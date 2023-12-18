@@ -3,8 +3,13 @@ import json
 import random
 from tqdm import tqdm
 
-api_key = input("Please enter your API KEY: ")
-API_KEY = api_key  ## 본인 API key 입력
+
+def get_gpt4_api_key(key_path):
+    with open(key_path, 'r', encoding='utf-8') as fr:
+        return fr.readline().strip()
+
+
+API_KEY = get_gpt4_api_key('./GPT-4_API_Key.txt')  ## 본인 API key 입력
 ENGINE = 'gpt-4-1106-preview'  ## 지금 버전이 gpt-4 turbo!
 client = OpenAI(api_key=API_KEY)
 
@@ -74,14 +79,14 @@ answers = []
 for iter in tqdm(range(60), desc=f"Completing..."):
     rand_seeds_indies = []
     seeds_pool = []
-    while len(rand_seeds_indies) < 2:
+    while len(rand_seeds_indies) < 4:
         index = random.randint(0, len(seeds) - 1)
         if index not in rand_seeds_indies:
             rand_seeds_indies.append(index)
             seeds_pool.append(seeds[index])
     rand_augs_indies = []
     augs_pool = []
-    while len(rand_augs_indies) < 1:
+    while len(rand_augs_indies) < 2:
         index = random.randint(0, len(augmented_dials) - 1)
         if index not in rand_augs_indies:
             rand_augs_indies.append(index)
@@ -99,13 +104,13 @@ for iter in tqdm(range(60), desc=f"Completing..."):
     #         pass
 
     # 본인 프롬프트에 맞게 수정
-    prompt = f'''### Instruction: Please generate new dialogue that 'user' is asking recommendation food or travel for 'bot'. 'bot' should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You should follow the structure of given samples; Lastly, you should avoid to generate similiar bot's response in samples, Please create diverse bot's responses which is requesting new information to user. \n ### Input: [Sample 1] {samples_pool[0]['dialogue']} \n [Sample 2] {samples_pool[1]['dialogue']} \n [Sample 3] {samples_pool[2]['dialogue']} \n ### Output: [Sample 4] '''
+    prompt = f'''### Instruction: Please generate new dialogue that 'user' is asking recommendation food or travel for 'bot'. 'bot' should respond like dialogue agent that request more information for better recommendation rather than recommend directly. You should follow the structure of given samples; Lastly, you should avoid to generate similiar bot's response in samples, Please create diverse bot's responses which is requesting new information to user. \n ### Input: [Sample 1] {samples_pool[0]['dialogue']} \n [Sample 2] {samples_pool[1]['dialogue']} \n [Sample 3] {samples_pool[2]['dialogue']} \n [Sample 4] {samples_pool[3]['dialogue']} \n [Sample 5] {samples_pool[4]['dialogue']} \n [Sample 6] {samples_pool[5]['dialogue']} \n ### Output: [Sample 7] '''
 
     answer, usage = run_gpt_turbo(ENGINE, prompt=prompt)
     answers.append({'prev_state': "", "dialogue": answer, "cur_state": "", "response": ""})
     augmented_dials.append({'prev_state': "", "dialogue": answer, "cur_state": "", "response": ""})
 
-with open('augmented_dial_v2_gpt-4.jsonl', 'w', encoding='utf-8') as fw:
+with open('augmented_dial_v2_6shots_gpt-4.jsonl', 'w', encoding='utf-8') as fw:
     for data in answers:
         fw.write(json.dumps(data, ensure_ascii=False))
         fw.write("\n")
