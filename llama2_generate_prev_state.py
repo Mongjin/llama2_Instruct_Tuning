@@ -33,7 +33,7 @@ model.eval()
 tokenizer = LlamaTokenizer.from_pretrained(model_id)
 
 datas = []
-with open('samples_translation.json', 'r', encoding='utf-8') as fr:
+with open('data/samples_translation.json', 'r', encoding='utf-8') as fr:
     for line in fr.readlines():
         datas.append(json.loads(line))
 

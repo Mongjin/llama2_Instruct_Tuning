@@ -57,7 +57,7 @@ def format_instruction(sample):
             dialogue = dialogue[:bot_index]
     return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {sample['prev_state']} [Dialogue] {dialogue} \n ### Output: [Current state] """
 
-dataset = get_dst_instruction_data('./samples_translation.json')
+dataset = get_dst_instruction_data('data/samples_translation.json')
 model_id = "Llama-2-13b-DST-v2" # non gated with RLHF version
 
 # BitsAndBytesConfig int-4 config

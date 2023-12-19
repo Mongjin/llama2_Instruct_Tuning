@@ -66,7 +66,7 @@ def get_datas(file_path):
     return datas
 
 
-seeds = get_datas('./samples_translation.json')
+seeds = get_datas('data/samples_translation.json')
 augmented_dials = get_datas('data/augmented_dial_gpt-4.jsonl')
 
 answers = []

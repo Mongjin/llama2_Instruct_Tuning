@@ -39,7 +39,7 @@ def format_instruction(sample):
 
 from random import randrange
 
-dataset = get_dst_instruction_data('./total_data.jsonl')
+dataset = get_dst_instruction_data('data/total_data.jsonl')
 # dataset = []
 # for i in range(len(datas)):
 #     dataset.append(format_instruction(datas[i]))

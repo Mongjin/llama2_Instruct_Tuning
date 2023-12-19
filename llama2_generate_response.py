@@ -32,7 +32,7 @@ model.eval()
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 
 datas = []
-with open('samples_translation.json', 'r', encoding='utf-8') as fr:
+with open('data/samples_translation.json', 'r', encoding='utf-8') as fr:
     for line in fr.readlines():
         datas.append(json.loads(line))
 
@@ -42,7 +42,7 @@ with open('dialogue_augment.txt', 'r', encoding='utf-8') as fr:
         augmented_dials.append(line.strip())
 
 augmented_states = []
-with open('state_augment.txt', 'r', encoding='utf-8') as fr:
+with open('data/state_augment.txt', 'r', encoding='utf-8') as fr:
     for line in fr.readlines():
         augmented_states.append(line.strip())
 
