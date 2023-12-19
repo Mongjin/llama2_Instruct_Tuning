@@ -103,4 +103,4 @@ for i, data in enumerate(dataset):
 
 with open('samples_translation_results.jsonl', 'w', encoding='utf-8') as fw:
     for result in results:
-        fw.write(json.dumps(result) + "\n")
+        fw.write(json.dumps(result, ensure_ascii=False) + "\n")
