@@ -49,7 +49,7 @@ def get_diversity(datas):
 
 
 if __name__ == "__main__":
-    datas = get_data('data/augmented_dial_gpt-4.jsonl')
+    datas = get_data('data/total_data.jsonl')
     token_dict = get_diversity(datas)
     token_dict = token_dict[:15]
 
@@ -61,4 +61,4 @@ if __name__ == "__main__":
         ratioes.append(ratio)
 
     plt.pie(ratioes, labels=labels, autopct='%.1f%%', startangle=260, counterclock=False, explode=explode, shadow=False)
-    plt.savefig('./verb_diversity.jpg')
+    plt.savefig('./v2_verb_diversity.jpg')
