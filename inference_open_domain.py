@@ -52,12 +52,12 @@ def format_instruction(sample):
     dialogue = sample['dialogue']
     sample['prev_state'] = "None"
     if "bot: " in dialogue:
-        bot_index = dialogue.index("bot: ")
+        bot_index = dialogue.index("bot:")
         # len("abot: ") = 6, "abot: ".rindex("bot: ") = 1
         dialogue = dialogue[:bot_index]
     return f"""### Instruction: Update 'cur_state' (i.e., current state) based on last user's utterance of [Dialogue]. Follow tese rules: First, if there are no additional information to update 'cur_state', you can just output same content as 'prev_state'. Second, update dialogue states of given dialogue. Third, do not generate additional utterances or explain. Please update 'cur_state' while considering these factors. \n ### Input: [Previous state] 'prev_state': {sample['prev_state']} [Dialogue] {dialogue} \n ### Output: [Current state] """
 
-dataset = get_dst_instruction_data('./data/augmented_dial_v2_6shots_temp1.0_pp0.3_gpt-4.jsonl')
+dataset = get_dst_instruction_data('./data/samples_translation.json')
 model_id = "Llama-2-13b-DST-v2" # non gated with RLHF version
 
 # BitsAndBytesConfig int-4 config
@@ -101,6 +101,6 @@ for i, data in enumerate(dataset):
     data['generated_state'] = result
     results.append(data)
 
-with open('./results/open_domain_results.json', 'w', encoding='utf-8') as fw:
+with open('./results/close_domain_results.json', 'w', encoding='utf-8') as fw:
     for result in results:
         fw.write(json.dumps(result, ensure_ascii=False) + "\n")
