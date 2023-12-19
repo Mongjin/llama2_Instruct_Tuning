@@ -72,10 +72,10 @@ def get_datas(file_path):
     return datas
 
 
-seeds = get_datas('./seed_data_state_v2.jsonl')
-seeds.extend(get_datas('./samples_bitna.jsonl'))
-seeds.extend(get_datas('./samples_dial_state_heum.jsonl'))
-augmented_dials = get_datas('./augmented_dial_v2.1_6shots_temp1.0_pp0.3_gpt-4.jsonl')
+seeds = get_datas('data/seed_data_state_v2.jsonl')
+seeds.extend(get_datas('data/samples_bitna.jsonl'))
+seeds.extend(get_datas('data/samples_dial_state_heum.jsonl'))
+augmented_dials = get_datas('data/augmented_dial_v2.1_6shots_temp1.0_pp0.3_gpt-4.jsonl')
 # augmented_dials = []
 
 answers = []
@@ -104,7 +104,7 @@ for sample in tqdm(augmented_dials, desc=f"Completing..."):
         augmented_dials.append({'prev_state': "", "dialogue": answer, "cur_state": "", "response": ""})
         prev_state = answer
 
-with open('augmented_dial_state_v2_temp1.0_pp0.3.jsonl', 'w', encoding='utf-8') as fw:
+with open('data/augmented_dial_state_v2_temp1.0_pp0.3.jsonl', 'w', encoding='utf-8') as fw:
     for data in answers:
         fw.write(json.dumps(data, ensure_ascii=False))
         fw.write("\n")

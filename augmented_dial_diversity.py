@@ -49,7 +49,7 @@ def get_diversity(datas):
 
 
 if __name__ == "__main__":
-    datas = get_data('./augmented_dial_gpt-4.jsonl')
+    datas = get_data('data/augmented_dial_gpt-4.jsonl')
     token_dict = get_diversity(datas)
     token_dict = token_dict[:15]
 

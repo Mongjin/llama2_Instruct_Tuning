@@ -72,7 +72,7 @@ def get_datas(file_path):
     return datas
 
 
-seeds = get_datas('./seed_data_v2.jsonl')
+seeds = get_datas('data/seed_data_v2.jsonl')
 # augmented_dials = get_datas('./augmented_dial_gpt-4.jsonl')
 augmented_dials = []
 
@@ -111,7 +111,7 @@ for iter in tqdm(range(20), desc=f"Completing..."):
     answers.append({'prev_state': "", "dialogue": answer, "cur_state": "", "response": ""})
     augmented_dials.append({'prev_state': "", "dialogue": answer, "cur_state": "", "response": ""})
 
-with open('augmented_dial_v2_6shots_temp1.0_pp0.3_gpt-4.jsonl', 'w', encoding='utf-8') as fw:
+with open('data/augmented_dial_v2_6shots_temp1.0_pp0.3_gpt-4.jsonl', 'w', encoding='utf-8') as fw:
     for data in answers:
         fw.write(json.dumps(data, ensure_ascii=False))
         fw.write("\n")
