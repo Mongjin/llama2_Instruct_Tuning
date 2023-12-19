@@ -21,8 +21,8 @@ def get_dst_instruction_data(file_path):
 def format_instruction(sample):
     dialogue = sample['dialogue']
     if "bot: " in dialogue:
-        bot_index = dialogue.rindex("bot: ")
-        user_index = dialogue.rindex("user: ")
+        bot_index = dialogue.rindex("bot:")
+        user_index = dialogue.rindex("user:")
         # len("abot: ") = 6, "abot: ".rindex("bot: ") = 1
         if bot_index > user_index:
             dialogue = dialogue[:bot_index]
